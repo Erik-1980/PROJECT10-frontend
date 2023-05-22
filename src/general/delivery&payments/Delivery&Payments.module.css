@@ -1,0 +1,29 @@
+.text {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: justify;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.text h2 {
+    color: red;
+    margin-top: 15px;
+}
+
+.text h4 {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.text p {
+    text-indent: 40px;
+}
+
+.img {
+    width: 100%;
+}
+
+.text h5 {
+    font-style: italic;
+}

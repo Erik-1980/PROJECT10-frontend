@@ -1,0 +1,18 @@
+.category {
+    border: 1px solid rgb(137, 132, 132);
+    border-radius: 8px;
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color: rgb(34, 33, 33);
+    width: 50%;
+}
+
+.label {
+    color: red;
+    font-weight: bold;
+}
+
+.header {
+    color: red;
+    text-align: center;
+}

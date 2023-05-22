@@ -1,0 +1,9 @@
+.contentStyleCarousel {
+    height: 160px;
+    color: black;
+    line-height: 160px;
+    text-align: center;
+    margin-bottom: 10px;
+    max-width: 1500px;
+    margin: 0 auto;
+}

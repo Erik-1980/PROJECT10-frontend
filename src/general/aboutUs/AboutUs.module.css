@@ -1,0 +1,30 @@
+.aboutUs {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.aboutUs h2 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 50px;
+    color: red;
+}
+
+.aboutUs p {
+    font-size: 18px;
+    position: relative;
+    text-indent: 40px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.link {
+    text-decoration: none;
+    color: blue;
+}
+
+.img {
+    width: 50%;
+    padding: 10px;
+}

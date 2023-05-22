@@ -1,0 +1,39 @@
+.cap {
+    background-color: black;
+    width: 1536px;
+    height: 62px;
+    margin-bottom: 1px;
+}
+
+.brandName {
+    color:red;
+    font-size: 36px;
+    font-weight: bolder;
+    padding: 10px;
+    margin-bottom: 1px;
+}
+
+.store {
+    color: white;
+}
+
+.icon {
+    color: white;
+    font-size: 24px;
+    float: right;
+    padding-top: 8px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+.phonenumber {
+    font-size: 14px;
+}
+
+.phoneicon {
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    padding-left: 1000px;
+    padding-top: 8px;
+}
