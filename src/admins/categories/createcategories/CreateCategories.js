@@ -4,6 +4,7 @@ import styles from './CreateCategories.module.css';
 import { verificationToken } from '../../../VerificationToken';
 import { useSelector } from 'react-redux';
 import { SuccessAlert, ErrorAlert } from '../../../general/alert/AlertComponent';
+import { getCategories } from '../getcategories/GetCategories';
 
 function CreateCategory() {
   const token = useSelector((state) => state.auth.token);
@@ -43,7 +44,8 @@ function CreateCategory() {
       const data = await response.json();
       if (data.message) {
         setMessage(data.message);
-        form.resetFields(['category', 'description']); 
+        form.resetFields(['category', 'description']);
+        await getCategories();
       } else if (data.message_error) {
         setError(data.message_error);
       } else {

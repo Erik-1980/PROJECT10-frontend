@@ -80,7 +80,7 @@ export const WarningAlert = ({ message }) => (
   </div>
 );
 
-export const InfoAlert = ({ message }) => (
+export const InfoAlert = ({ message, onclick }) => (
   <div className={styles.alert}>
     <Alert
       message="Info"
@@ -88,7 +88,7 @@ export const InfoAlert = ({ message }) => (
       type="info"
       action={
         <Space direction="vertical">
-          <Button size="small" type="primary">
+          <Button size="small" type="primary" onClick={onclick}>
             Accept
           </Button>
           <Button size="small" danger type="ghost">

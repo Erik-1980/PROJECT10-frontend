@@ -19,6 +19,7 @@ function getItem(label, key, icon, children, type) {
 const MenuComponent = () => {
 
   const token = useSelector((state) => state.auth.token);
+  const categories = useSelector((state) => state.category.categories);
   const getEmailFromToken = () => {
     if (token) {
       const decodedToken = jwt_decode(token);
@@ -30,18 +31,17 @@ const MenuComponent = () => {
   const admin = admins.find((value) => {
     return value === email;
   });
-
   const items = [
     getItem(<Link to="/">home</Link>, '1', <HomeOutlined />),
     getItem(<Link to="/about">about Us</Link>, '2', <LikeOutlined />),
     getItem(<Link to="/banks">credit terms</Link>, '3', <BankOutlined />),
     getItem(<Link to="/delivery">delivery and payments</Link>, '4', <CarOutlined />),
     getItem('write to Us', '5', <MailOutlined />),
-    getItem('category', 'sub1', <AppstoreOutlined />, [
-      getItem('Option 6', '6'),
-      getItem('Option 7', '7'),
-      getItem('Option 8', '8'),
-    ]),
+    getItem('category', 'sub1', <AppstoreOutlined />,
+      categories.map((value) => (
+        getItem(value.name, 'category'+value.id)
+      ))
+    ),
     getItem('price', 'sub2', <DollarOutlined />, [
       getItem('Option 9', '9'),
       getItem('Option 10', '10'),

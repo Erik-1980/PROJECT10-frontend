@@ -4,7 +4,6 @@ import { verificationToken } from '../../../VerificationToken';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { SuccessAlert, ErrorAlert } from '../../../general/alert/AlertComponent';
-import { getCategories } from '../../categories/getcategories/GetCategories';
 
 const { Option } = Select;
 
@@ -18,6 +17,7 @@ const layout = {
 };
 export default function CreateProducts() {
   const token = useSelector((state) => state.auth.token);
+  const categories = useSelector((state) => state.category.categories);
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -48,7 +48,7 @@ export default function CreateProducts() {
       const data = await response.json();
       if (data.message) {
         setMessage(data.message);
-        form.resetFields(); 
+        form.resetFields();
       } else if (data.message_error) {
         setError(data.message_error);
       } else {
@@ -228,10 +228,10 @@ export default function CreateProducts() {
             },
           ]}
         >
-          <Select>
-            <Option value="1">Category 1</Option>
-            <Option value="2">Category 2</Option>
-            <Option value="10">Category 3</Option>
+          <Select placeholder='please select a category'>
+            {categories.map((values) => (
+              <Option key={values.id} value={values.id}>{values.name}</Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item

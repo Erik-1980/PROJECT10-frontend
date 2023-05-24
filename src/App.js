@@ -5,9 +5,10 @@ import AboutUs from './general/aboutUs/AboutUs';
 import Banks from './general/banks/Banks';
 import Delivery from './general/delivery&payments/Delivery&Payments';
 import AdminRoute from './admins/AdminRoute';
+import { getCategories } from './admins/categories/getcategories/GetCategories';
 
 function App() {
-
+getCategories();
   return (
     <div>
       <BrowserRouter>

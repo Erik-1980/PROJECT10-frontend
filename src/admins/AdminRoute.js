@@ -5,7 +5,7 @@ import GetAllUsers from './users/GetAllUsers';
 import CreateCategoryProduct from './createcategory&product/CreateCategoryProduct';
 // import GetAllProducts from './product/GetAllProducts';
 // import GetOneProduct from './product/GetOneProduct';
-// import UpdateProduct from './product/UpdateProduct';
+import UpdateCategoryProduct from './updatecategory&product/updateCategoryProduct';
 import MainPageAdmin from './MainPageAdmin';
 import { useSelector } from 'react-redux';
 import { admins } from '../config/SetAdmin';
@@ -39,7 +39,7 @@ export default function AdminRoute() {
                 <Route path='/create' element={<CreateCategoryProduct />} />
                 {/* <Route path='/getallproducts' element={<GetAllProducts />} /> */}
                 {/* <Route path='/getoneproduct' element={<GetOneProduct />} /> */}
-                {/* <Route path='/updateproduct' element={<UpdateProduct />} /> */}
+                <Route path='/update' element={<UpdateCategoryProduct />} />
             </Routes>
         </div>
     );

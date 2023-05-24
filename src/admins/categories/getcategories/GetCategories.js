@@ -5,7 +5,8 @@ export const getCategories = async () => {
         const response = await fetch(url);
         const data = await response.json();
         if (response.ok) {
-          localStorage.setItem('categories', data.categories)
+          const categories = JSON.stringify(data.categories);
+          localStorage.setItem('categories', categories);
         };
       } catch (error) {
         console.error("Error:", error);

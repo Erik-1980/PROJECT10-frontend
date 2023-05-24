@@ -19,8 +19,8 @@ const items = [
   getItem(<Link to="/admin/users">users</Link>, '3', <BankOutlined />),
   getItem(<Link to="/admin/create">create</Link>, '4', <CarOutlined />),
   getItem(<Link to="/admin/orders">orders</Link>, '5', <CarOutlined />),
+  getItem(<Link to="/admin/update">update</Link>, '6', <CarOutlined />),
   getItem('category', 'sub1', <AppstoreOutlined />, [
-    getItem('Option 6', '6'),
     getItem('Option 7', '7'),
     getItem('Option 8', '8'),
   ]),
