@@ -110,7 +110,7 @@ const Register = () => {
       country: values.residence[0],
       region: values.residence[1],
       city: values.city,
-      adress: values.adress,
+      address: values.address,
       phone: values.prefix + values.phone,
       gender: values.gender
     };
@@ -287,8 +287,8 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="adress"
-            label="Adress"
+            name="address"
+            label="Address"
             rules={[
               {
                 required: true,

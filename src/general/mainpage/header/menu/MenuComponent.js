@@ -38,7 +38,7 @@ const MenuComponent = () => {
     getItem(<Link to="/delivery">delivery and payments</Link>, '4', <CarOutlined />),
     getItem('write to Us', '5', <MailOutlined />),
     getItem('category', 'sub1', <AppstoreOutlined />,
-      categories.map((value) => (
+      categories?.map((value) => (
         getItem(value.name, 'category'+value.id)
       ))
     ),

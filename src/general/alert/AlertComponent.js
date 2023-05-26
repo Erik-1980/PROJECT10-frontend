@@ -80,23 +80,42 @@ export const WarningAlert = ({ message }) => (
   </div>
 );
 
-export const InfoAlert = ({ message, onclick }) => (
-  <div className={styles.alert}>
-    <Alert
-      message="Info"
-      description={message}
-      type="info"
-      action={
-        <Space direction="vertical">
-          <Button size="small" type="primary" onClick={onclick}>
-            Accept
-          </Button>
-          <Button size="small" danger type="ghost">
-            Decline
-          </Button>
-        </Space>
-      }
-      closable
-    />
-  </div>
-);
+
+
+
+export const InfoAlert = ({ message, onConfirm, onCancel }) => {
+  const [color, setColor] = useState('black');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setColor((prevColor) => (prevColor === 'white' ? 'red' : 'white'));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  const messages = <span style={{ color }}>Warning!!!</span>
+  return (
+    <div className={styles.alert}>
+      <Alert
+        className={styles.warning}
+        message={messages}
+        description={message}
+        type="info"
+        action={
+          <Space direction="vertical">
+            <Button size="small" type="primary" onClick={onConfirm} className={styles.accept}>
+              Accept
+            </Button>
+            <Button size="small" danger type="ghost" onClick={onCancel} className={styles.decline}>
+              Decline
+            </Button>
+          </Space>
+        }
+        closable={onCancel}
+        onClose={onCancel}
+      />
+    </div>
+  );
+};

@@ -6,11 +6,13 @@ import Banks from './general/banks/Banks';
 import Delivery from './general/delivery&payments/Delivery&Payments';
 import AdminRoute from './admins/AdminRoute';
 import { getCategories } from './admins/categories/getcategories/GetCategories';
+import GetProducts from './admins/products/getproducts/GetProducts';
 
 function App() {
 getCategories();
   return (
     <div>
+      <GetProducts />
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<MainPage />} />

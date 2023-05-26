@@ -26,7 +26,7 @@ export default function CreateProducts() {
   const onFinish = async (values) => {
     setMessage('');
     setError('');
-    const url = `http://localhost:5000/product`;
+    const url = 'http://localhost:5000/product/product';
     try {
       const formData = new FormData();
       formData.append('image', image);
@@ -229,7 +229,7 @@ export default function CreateProducts() {
           ]}
         >
           <Select placeholder='please select a category'>
-            {categories.map((values) => (
+            {categories?.map((values) => (
               <Option key={values.id} value={values.id}>{values.name}</Option>
             ))}
           </Select>

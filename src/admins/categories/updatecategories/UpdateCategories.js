@@ -1,9 +1,10 @@
-import { Form, Popconfirm, Table, Typography, Input } from 'antd';
+import { Form, Table, Typography, Input } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './UpdateCategories.module.css';
 import { verificationToken } from '../../../VerificationToken';
 import { SuccessAlert, ErrorAlert, InfoAlert } from '../../../general/alert/AlertComponent';
+import { getCategories } from '../getcategories/GetCategories'
 
 const UpdateCategories = () => {
   const categories = useSelector((state) => state.category.categories);
@@ -11,7 +12,8 @@ const UpdateCategories = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
-  const filteredCategories = categories.map((category) => {
+  const [id, setId] = useState();
+  const filteredCategories = categories?.map((category) => {
     const { id, name, description } = category;
     return { key: id, id, name, description };
   });
@@ -63,39 +65,74 @@ const UpdateCategories = () => {
       description: '',
       ...record,
     });
-    console.log(record);
     setEditingKey(record.id);
   };
   const cancel = () => {
     setEditingKey('');
   };
-  const save = async (key) => {
+  const save = async () => {
+    setMessage('');
+    setError('');
     try {
       const row = await form.validateFields();
-      console.log(row);
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
-    }
-  };
-  const handleConfirmDelete = () => {
-    setConfirm(true);
-  };
-  const handleDelete = async (id) => {
-    const url = `http://localhost:5000/product/category/${id}`;
+      const name = row.name;
+      const description = row.description;
+      const id = editingKey;
+      const url = 'http://localhost:5000/product/updatecategory';
       try {
         const response = await verificationToken(url, {
-          method: "DELETE",
+          method: "PUT",
+          body: JSON.stringify({ id, name, description }),
           headers: {
+            "Content-Type": "application/json",
             Authorization: token,
-          }
+          },
         });
         const data = await response.json();
-        setMessage(data);
-        } catch (error) {
+        if (data.message) {
+          setMessage(data.message);
+          await getCategories();
+          setEditingKey('');
+        } else {
+          setError('something went wrong, please try again later');
+        }
+      } catch (error) {
         console.error("Error:", error);
         setError('something went wrong, please try again later');
       }
-    // const updatedCategories = categories.filter((category) => category.id !== id);
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo);
+      setError('something went wrong, please try again later');
+    };
+  };
+  const deleteCategory = (id) => {
+    setId(id)
+    setConfirm(true);
+  };
+  const closeAlert = () => {
+    setConfirm(false)
+  }
+  const handleDelete = async () => {
+    setConfirm(false);
+    setMessage('');
+    setError('');
+    const url = `http://localhost:5000/product/category/${id}`;
+    try {
+      const response = await verificationToken(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: token,
+        }
+      });
+      const data = await response.json();
+      if (data.message) {
+        setMessage(data.message);
+        await getCategories();
+      };
+    } catch (error) {
+      console.error("Error:", error);
+      setError('something went wrong, please try again later');
+    };
   };
   const columns = [];
 
@@ -126,11 +163,9 @@ const UpdateCategories = () => {
                   marginRight: 8,
                 }}
               >
-                Save
+                change
               </Typography.Link>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <Typography.Link>Cancel</Typography.Link>
-              </Popconfirm>
+              <Typography.Link onClick={cancel}>cancel</Typography.Link>
             </span>
           ) : (
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
@@ -143,7 +178,7 @@ const UpdateCategories = () => {
         title: 'delete',
         dataIndex: 'delete',
         render: (_, record) => (
-          <Typography.Link onClick={() => handleConfirmDelete(record.id)}>
+          <Typography.Link onClick={() => deleteCategory(record.id)}>
             delete
           </Typography.Link>
         ),
@@ -180,8 +215,9 @@ const UpdateCategories = () => {
         }
         {confirm &&
           <InfoAlert
-            message={confirm}
-            onclick={handleDelete}
+            message={'When deleting a category, you will also delete all products associated with that category'}
+            onConfirm={handleDelete}
+            onCancel={closeAlert}
           />
         }
       </>

@@ -1,15 +1,30 @@
-import { Form, Popconfirm, Table, Typography, Input } from 'antd';
+import { Form, Table, Typography, Input, InputNumber, Select } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './UpdateCategories.module.css';
+import styles from './UpdateProducts.module.css';
+import { verificationToken } from '../../../VerificationToken';
+import { SuccessAlert, ErrorAlert, InfoAlert } from '../../../general/alert/AlertComponent';
 
-const UpdateCategories = () => {
+const { Option } = Select;
+
+const UpdateProducts = () => {
   const categories = useSelector((state) => state.category.categories);
-  const filteredCategories = categories.map((category) => {
+  const product = useSelector((state) => state.product.products);
+  const token = useSelector((state) => state.auth.token);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [confirm, setConfirm] = useState(false);
+  const [id, setId] = useState();
+
+  const products = product?.map(obj => {
+    const { 'category.name': categoryName, ...rest } = obj;
+    return { ...rest, category: categoryName, key: obj.id };
+  });
+
+  const filteredCategories = categories?.map((category) => {
     const { id, name, description } = category;
     return { key: id, id, name, description };
   });
-
   const EditableCell = ({
     editing,
     dataIndex,
@@ -21,7 +36,7 @@ const UpdateCategories = () => {
     ...restProps
   }) => {
     let rules = [];
-    if (dataIndex === 'name') {
+    if (dataIndex === 'brand' || dataIndex === 'name' || dataIndex === 'model' || dataIndex === 'price' || dataIndex === 'quantity' || dataIndex === 'discount') {
       rules = [
         {
           required: true,
@@ -29,6 +44,9 @@ const UpdateCategories = () => {
         },
       ];
     }
+    const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'select' ? <Select>{filteredCategories?.map((values) => (
+      <Option key={values.id} value={values.id}>{values.name}</Option>
+    ))}</Select> : <Input />;
     return (
       <td {...restProps}>
         {editing ? (
@@ -39,7 +57,7 @@ const UpdateCategories = () => {
             }}
             rules={rules}
           >
-            <Input />
+            {inputNode}
           </Form.Item>
         ) : (
           children
@@ -54,37 +72,114 @@ const UpdateCategories = () => {
   const edit = (record) => {
     form.setFieldsValue({
       name: '',
+      brand: '',
+      model: '',
       description: '',
       ...record,
     });
-    console.log(record);
     setEditingKey(record.id);
   };
   const cancel = () => {
     setEditingKey('');
   };
-  const save = async (key) => {
+  const save = async () => {
+    setMessage('');
+    setError('');
     try {
       const row = await form.validateFields();
-      console.log(row);
+      let categ = row.category;
+      if (typeof categ === 'string') {
+        const foundCategory = filteredCategories.find((obj) => {
+          return obj.name === categ;
+        });
+        if (foundCategory) {
+          categ = foundCategory.id;
+        };
+      }
+      const name = row.name;
+      const brand = row.brand;
+      const model = row.model;
+      const price = row.price;
+      const quantity = row.quantity;
+      const discount = row.discount;
+      const description = row.description;
+      const categoryId = categ
+      const id = editingKey;
+      const url = 'http://localhost:5000/product/updateproduct';
+      try {
+        const response = await verificationToken(url, {
+          method: "PUT",
+          body: JSON.stringify({ id, name, brand, model, price, quantity, discount, categoryId, description }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
+        const data = await response.json();
+        if (data.message) {
+          setMessage(data.message);
+          setEditingKey('');
+        } else {
+          setError('something went wrong, please try again later');
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setError('something went wrong, please try again later');
+      }
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
-    }
+      setError('something went wrong, please try again later');
+    };
   };
-  const handleDelete = (id) => {
-    // const updatedCategories = categories.filter((category) => category.id !== id);
+  const deleteProduct = (id) => {
+    setId(id);
+    setConfirm(true);
+  };
+  const closeAlert = () => {
+    setConfirm(false)
+  }
+  const handleDelete = async () => {
+    setConfirm(false);
+    setMessage('');
+    setError('');
+    const url = `http://localhost:5000/product/product/${id}`;
+    try {
+      const response = await verificationToken(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: token,
+        }
+      });
+      const data = await response.json();
+      if (data.message) {
+        setMessage(data.message);
+      };
+      if (data.message_error) {
+        setError(data.message_error)
+      };
+    } catch (error) {
+      console.error("Error:", error);
+      setError('something went wrong, please try again later');
+    };
   };
   const columns = [];
 
-  if (categories) {
-    Object.keys(categories[0]).forEach((key) => {
-      if (key === 'name' || key === 'description') {
+  if (products) {
+    Object.keys(products[0]).forEach((key) => {
+      if (key === 'name' || key === 'brand' || key === 'model' || key === 'price' || key === 'quantity' || key === 'discount' || key === 'description' || key === 'category' || key === 'image') {
         const column = {
           key: key,
           title: key,
           dataIndex: key,
-          width: '40%',
+          width: key === 'description' || key === 'model' ? '15%' : '8%',
           editable: true,
+          render: (text, record) => {
+            if (key === 'image') {
+              return <img src={`http://localhost:5000/${text}`} alt={record.name} width={40} />;
+            } else {
+              return text;
+            }
+          },
         };
         columns.push(column);
       };
@@ -103,15 +198,13 @@ const UpdateCategories = () => {
                   marginRight: 8,
                 }}
               >
-                Save
+                change
               </Typography.Link>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <Typography.Link>Cancel</Typography.Link>
-              </Popconfirm>
+              <Typography.Link onClick={cancel}>cancel</Typography.Link>
             </span>
           ) : (
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-              Edit
+              edit
             </Typography.Link>
           );
         },
@@ -120,7 +213,7 @@ const UpdateCategories = () => {
         title: 'delete',
         dataIndex: 'delete',
         render: (_, record) => (
-          <Typography.Link onClick={() => handleDelete(record.id)}>
+          <Typography.Link onClick={() => deleteProduct(record.id)}>
             delete
           </Typography.Link>
         ),
@@ -135,7 +228,7 @@ const UpdateCategories = () => {
       ...col,
       onCell: (record) => ({
         record,
-        // inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: col.dataIndex === 'price' || col.dataIndex === 'quantity' || col.dataIndex === 'discount' ? 'number' : col.dataIndex === 'category' ? 'select' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -144,6 +237,25 @@ const UpdateCategories = () => {
   });
   return (
     <Form form={form} component={false}>
+      <>
+        {message &&
+          <SuccessAlert
+            message={message}
+          />
+        }
+        {error &&
+          <ErrorAlert
+            message={error}
+          />
+        }
+        {confirm &&
+          <InfoAlert
+            message={'When deleting a category, you will also delete all products associated with that category'}
+            onConfirm={handleDelete}
+            onCancel={closeAlert}
+          />
+        }
+      </>
       <Table
         components={{
           body: {
@@ -151,7 +263,7 @@ const UpdateCategories = () => {
           },
         }}
         bordered
-        dataSource={filteredCategories}
+        dataSource={products}
         columns={mergedColumns}
         rowClassName={styles.page}
         pagination={{
@@ -161,4 +273,4 @@ const UpdateCategories = () => {
     </Form>
   );
 };
-export default UpdateCategories;
+export default UpdateProducts;

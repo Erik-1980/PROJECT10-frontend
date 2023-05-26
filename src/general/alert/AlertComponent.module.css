@@ -8,4 +8,20 @@
     align-items: center;
     z-index: 9999;
   }
+
+  .warning {
+    font-weight: bold;
+    background-color: rgb(49, 46, 46);
+    color: white;
+  }
   
+  .decline {
+    background-color: white;
+    color: black;
+    margin-left: 10px;
+    border:1px solid black;
+  }
+
+  .accept {
+    margin-left: 10px;
+  }

@@ -1,11 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import Header from './header/HeaderAdmin'
-// import GetUser from './user/GetUser';
+import Header from './header/HeaderAdmin';
 import GetAllUsers from './users/GetAllUsers';
 import CreateCategoryProduct from './createcategory&product/CreateCategoryProduct';
-// import GetAllProducts from './product/GetAllProducts';
-// import GetOneProduct from './product/GetOneProduct';
-import UpdateCategoryProduct from './updatecategory&product/updateCategoryProduct';
+import UpdateCategories from './categories/updatecategories/UpdateCategories';
+import UpdateProducts from './products/updateproduct/UpdateProducts';
 import MainPageAdmin from './MainPageAdmin';
 import { useSelector } from 'react-redux';
 import { admins } from '../config/SetAdmin';
@@ -34,12 +32,10 @@ export default function AdminRoute() {
             <Header />
             <Routes>
                 <Route path='/' element={<MainPageAdmin />} />
-                {/* <Route path='/getuser' element={<GetUser />} /> */}
                 <Route path='/users' element={<GetAllUsers />} />
                 <Route path='/create' element={<CreateCategoryProduct />} />
-                {/* <Route path='/getallproducts' element={<GetAllProducts />} /> */}
-                {/* <Route path='/getoneproduct' element={<GetOneProduct />} /> */}
-                <Route path='/update' element={<UpdateCategoryProduct />} />
+                <Route path='/updatecategory' element={<UpdateCategories />} />
+                <Route path='/updateproduct' element={<UpdateProducts />} />
             </Routes>
         </div>
     );
