@@ -1,13 +1,15 @@
 import { Form, Table, Typography, Input, InputNumber, Select } from 'antd';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './UpdateProducts.module.css';
-import { verificationToken } from '../../../VerificationToken';
+import { verificationToken } from '../../../verificationToken/VerificationToken';
 import { SuccessAlert, ErrorAlert, InfoAlert } from '../../../general/alert/AlertComponent';
+import fetchProducts from '../getproducts/GetProducts';
 
 const { Option } = Select;
 
 const UpdateProducts = () => {
+  const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
   const product = useSelector((state) => state.product.products);
   const token = useSelector((state) => state.auth.token);
@@ -46,7 +48,7 @@ const UpdateProducts = () => {
     }
     const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'select' ? <Select>{filteredCategories?.map((values) => (
       <Option key={values.id} value={values.id}>{values.name}</Option>
-    ))}</Select> : <Input />;
+    ))}</Select> : <Input autoComplete="off" />;
     return (
       <td {...restProps}>
         {editing ? (
@@ -118,10 +120,13 @@ const UpdateProducts = () => {
         const data = await response.json();
         if (data.message) {
           setMessage(data.message);
+          fetchProducts(dispatch);
           setEditingKey('');
+        } else if (data.error) {
+          setError(data.error)
         } else {
           setError('something went wrong, please try again later');
-        }
+        };
       } catch (error) {
         console.error("Error:", error);
         setError('something went wrong, please try again later');
@@ -153,6 +158,10 @@ const UpdateProducts = () => {
       const data = await response.json();
       if (data.message) {
         setMessage(data.message);
+        fetchProducts(dispatch);
+      };
+      if (data.error) {
+        setError(data.error)
       };
       if (data.message_error) {
         setError(data.message_error)
@@ -171,7 +180,7 @@ const UpdateProducts = () => {
           key: key,
           title: key,
           dataIndex: key,
-          width: key === 'description' || key === 'model' ? '15%' : '8%',
+          width: key === 'description' || key === 'model' ? '13%' : '8%',
           editable: true,
           render: (text, record) => {
             if (key === 'image') {
@@ -236,41 +245,43 @@ const UpdateProducts = () => {
     };
   });
   return (
-    <Form form={form} component={false}>
-      <>
-        {message &&
-          <SuccessAlert
-            message={message}
-          />
-        }
-        {error &&
-          <ErrorAlert
-            message={error}
-          />
-        }
-        {confirm &&
-          <InfoAlert
-            message={'When deleting a category, you will also delete all products associated with that category'}
-            onConfirm={handleDelete}
-            onCancel={closeAlert}
-          />
-        }
-      </>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={products}
-        columns={mergedColumns}
-        rowClassName={styles.page}
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+    <div className={styles.main}>
+      <Form form={form} component={false}>
+        <>
+          {message &&
+            <SuccessAlert
+              message={message}
+            />
+          }
+          {error &&
+            <ErrorAlert
+              message={error}
+            />
+          }
+          {confirm &&
+            <InfoAlert
+              message={'When deleting a category, you will also delete all products associated with that category'}
+              onConfirm={handleDelete}
+              onCancel={closeAlert}
+            />
+          }
+        </>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={products}
+          columns={mergedColumns}
+          rowClassName={styles.page}
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </div>
   );
 };
 export default UpdateProducts;

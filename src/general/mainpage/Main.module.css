@@ -1,0 +1,39 @@
+  .main {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  
+  .item {
+    font-size: 16px;
+    color: rgb(151, 149, 149);
+  }
+  
+  .menu {
+    height: 860px;
+    border-left: 3px solid red;
+    border-top: 3px solid red;
+    background-color: black;
+    position: fixed;
+    top: 112px;
+    z-index: 999;
+    width: 220px;
+  }
+  
+  .content {
+    margin-left: -1.6em;
+    width: 103.7%;
+    min-height: 280px;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .menu {
+      width: 34%;
+    }
+  
+    .content {
+      margin-left: 0;
+      margin-top: 0;
+      width: 100%;
+    }
+  }
+  

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const categorySlice = createSlice({
     name: 'category',
-    initialState: { categories: JSON.parse(localStorage.getItem('categories'))},
+    initialState: {},
     reducers: {
         setCategory(state, action) {
             state.categories = action.payload;

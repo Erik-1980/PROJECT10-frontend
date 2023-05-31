@@ -4,3 +4,8 @@
     color: red;
     background-color: rgb(28, 27, 27);
   }
+
+  .main {
+    max-width: 1500px;
+    margin: 0 auto;
+  }

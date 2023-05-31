@@ -1,7 +1,7 @@
 import { SuccessAlert, ErrorAlert } from '../alert/AlertComponent';
 import { useState } from 'react';
 import { Button, Cascader, Form, Input, Select } from 'antd';
-import Header from '../mainpage/header/Header';
+import HeaderContent from '../mainpage/header/HeaderContent';
 import styles from './Register.module.css';
 
 const { Option } = Select;
@@ -150,7 +150,7 @@ const Register = () => {
 
   return (
     <div>
-      <Header />
+      <HeaderContent />
       {message &&
         <SuccessAlert
           message={message}

@@ -1,12 +1,13 @@
 import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
 import styles from './CreateCategories.module.css';
-import { verificationToken } from '../../../VerificationToken';
-import { useSelector } from 'react-redux';
+import { verificationToken } from '../../../verificationToken/VerificationToken';
+import { useSelector, useDispatch } from 'react-redux';
 import { SuccessAlert, ErrorAlert } from '../../../general/alert/AlertComponent';
-import { getCategories } from '../getcategories/GetCategories';
+import fetchCategories from '../getcategories/GetCategories';
 
 function CreateCategory() {
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -45,9 +46,11 @@ function CreateCategory() {
       if (data.message) {
         setMessage(data.message);
         form.resetFields(['category', 'description']);
-        await getCategories();
+        fetchCategories(dispatch);
       } else if (data.message_error) {
         setError(data.message_error);
+      } else if(data.error) {
+        setError(data.error)
       } else {
         setError('something went wrong, please try again later');
       }

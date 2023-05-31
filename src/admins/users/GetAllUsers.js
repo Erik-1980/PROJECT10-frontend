@@ -1,8 +1,9 @@
 import { Table, Button } from 'antd';
 import { useState } from 'react';
-import { verificationToken } from '../../VerificationToken';
+import { verificationToken } from '../../verificationToken/VerificationToken';
 import { useSelector } from 'react-redux';
 import { ErrorAlert } from '../../general/alert/AlertComponent';
+import styles from './GetAllUsers.module.css';
 
 const GetAllUsers = () => {
     const [users, setUsers] = useState();
@@ -48,7 +49,7 @@ const GetAllUsers = () => {
         }
     };
     return (
-        <div>
+        <div className={styles.main}>
             {error &&
                 <ErrorAlert
                     message={error}

@@ -3,7 +3,7 @@ import CreateProducts from '../products/craeteproduct/CreateProducts';
 
 export default function CreateCategoryProduct() {
     return (
-        <div style={{ display: 'flex'}}>
+        <div style={{ display: 'flex', maxWidth: '1500px', margin: '0 auto'}}>
             <CreateProducts />
             <CreateCategories />
         </div>

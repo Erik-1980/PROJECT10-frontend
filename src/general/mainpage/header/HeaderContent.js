@@ -1,9 +1,9 @@
-import Cap from '../../general/mainpage/header/cap/Cap';
-import MenuAdmin from './menu/MenuAdmin';
-import styles from './HeaderAdmin.module.css';
+import Cap from './cap/Cap';
+import MenuComponent from './menu/MenuComponent';
+import styles from './HeaderContent.module.css';
 import { Layout } from 'antd';
 
-const HeaderAdmin = () => {
+const HeaderContent = () => {
     const { Header } = Layout;
     return (
         <div className={styles.header}>
@@ -16,9 +16,8 @@ const HeaderAdmin = () => {
             >
                 <Cap />
             </Header>
-            <MenuAdmin />
+            <MenuComponent />
         </div>
-    )
+    );
 };
-
-export default HeaderAdmin;
+export default HeaderContent;

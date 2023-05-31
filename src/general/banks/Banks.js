@@ -1,10 +1,10 @@
-import Header from '../mainpage/header/Header';
 import styles from './Banks.module.css';
+import HeaderContent from '../mainpage/header/HeaderContent';
 
 const Banks = () => {
     return (
-        <div>
-            <Header />
+        <div className={styles.main}>
+            <HeaderContent />
             <div className={styles.text}>
                 <h2>Credit terms</h2>
                 <ul>

@@ -1,9 +1,10 @@
 import { Button, Form, Input, InputNumber, Upload, Select } from 'antd';
 import styles from './CreateProducts.module.css';
-import { verificationToken } from '../../../VerificationToken';
-import { useSelector } from 'react-redux';
+import { verificationToken } from '../../../verificationToken/VerificationToken';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { SuccessAlert, ErrorAlert } from '../../../general/alert/AlertComponent';
+import fetchProducts from '../getproducts/GetProducts';
 
 const { Option } = Select;
 
@@ -16,6 +17,7 @@ const layout = {
   },
 };
 export default function CreateProducts() {
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const categories = useSelector((state) => state.category.categories);
   const [image, setImage] = useState(null);
@@ -48,9 +50,12 @@ export default function CreateProducts() {
       const data = await response.json();
       if (data.message) {
         setMessage(data.message);
+        fetchProducts(dispatch);
         form.resetFields();
       } else if (data.message_error) {
         setError(data.message_error);
+      } else if (data.error) {
+        setError(data.error)
       } else {
         setError('something went wrong, please try again later');
       }

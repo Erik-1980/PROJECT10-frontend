@@ -16,7 +16,6 @@ const Cap = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('email');
     window.location.reload()
   };
 
@@ -27,13 +26,12 @@ const Cap = () => {
   );
 
   return (
-    <div className={styles.cap}>
+    <div className={styles.main}>
       <div className={styles.brandName}>
-        <p>
+        <span>
           RELQ<span className={styles.store}>store</span>
-          <span className={styles.phoneicon}><PhoneOutlined /><span className={styles.phonenumber}>099-00-00-00</span></span>
-          <span className={styles.icon}>{icon}</span>
-        </p>
+          <span className={styles.phoneicon}><PhoneOutlined /><span className={styles.phonenumber}>099-00-00-00 <span className={styles.icon}>{icon}</span></span></span>
+        </span>
       </div>
       <div>
         <Modal
@@ -42,7 +40,7 @@ const Cap = () => {
           onCancel={handleModalToggle}
           footer={null}
         >
-          <Login onclick={handleModalToggle} />
+          <Login />
         </Modal>
       </div>
     </div >

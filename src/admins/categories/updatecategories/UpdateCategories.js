@@ -1,18 +1,19 @@
 import { Form, Table, Typography, Input } from 'antd';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './UpdateCategories.module.css';
-import { verificationToken } from '../../../VerificationToken';
+import { verificationToken } from '../../../verificationToken/VerificationToken';
 import { SuccessAlert, ErrorAlert, InfoAlert } from '../../../general/alert/AlertComponent';
-import { getCategories } from '../getcategories/GetCategories'
+import fetchCategories from '../getcategories/GetCategories';
 
 const UpdateCategories = () => {
+  const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
   const token = useSelector((state) => state.auth.token);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
-  const [id, setId] = useState();
+  const [id, setId] = useState('');
   const filteredCategories = categories?.map((category) => {
     const { id, name, description } = category;
     return { key: id, id, name, description };
@@ -22,7 +23,6 @@ const UpdateCategories = () => {
     editing,
     dataIndex,
     title,
-    // inputType,
     record,
     index,
     children,
@@ -47,7 +47,7 @@ const UpdateCategories = () => {
             }}
             rules={rules}
           >
-            <Input />
+            <Input autoComplete="off" />
           </Form.Item>
         ) : (
           children
@@ -91,11 +91,13 @@ const UpdateCategories = () => {
         const data = await response.json();
         if (data.message) {
           setMessage(data.message);
-          await getCategories();
+          fetchCategories(dispatch);
           setEditingKey('');
+        } else if (data.error) {
+          setError(data.error)
         } else {
           setError('something went wrong, please try again later');
-        }
+        };
       } catch (error) {
         console.error("Error:", error);
         setError('something went wrong, please try again later');
@@ -127,7 +129,10 @@ const UpdateCategories = () => {
       const data = await response.json();
       if (data.message) {
         setMessage(data.message);
-        await getCategories();
+        fetchCategories(dispatch);
+      };
+      if (data.error) {
+        setError(data.error)
       };
     } catch (error) {
       console.error("Error:", error);
@@ -193,7 +198,6 @@ const UpdateCategories = () => {
       ...col,
       onCell: (record) => ({
         record,
-        // inputType: col.dataIndex === 'age' ? 'number' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -201,41 +205,43 @@ const UpdateCategories = () => {
     };
   });
   return (
-    <Form form={form} component={false}>
-      <>
-        {message &&
-          <SuccessAlert
-            message={message}
-          />
-        }
-        {error &&
-          <ErrorAlert
-            message={error}
-          />
-        }
-        {confirm &&
-          <InfoAlert
-            message={'When deleting a category, you will also delete all products associated with that category'}
-            onConfirm={handleDelete}
-            onCancel={closeAlert}
-          />
-        }
-      </>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={filteredCategories}
-        columns={mergedColumns}
-        rowClassName={styles.page}
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+    <div className={styles.main}>
+      <Form form={form} component={false}>
+        <>
+          {message &&
+            <SuccessAlert
+              message={message}
+            />
+          }
+          {error &&
+            <ErrorAlert
+              message={error}
+            />
+          }
+          {confirm &&
+            <InfoAlert
+              message={'When deleting a category, you will also delete all products associated with that category'}
+              onConfirm={handleDelete}
+              onCancel={closeAlert}
+            />
+          }
+        </>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={filteredCategories}
+          columns={mergedColumns}
+          rowClassName={styles.page}
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </div>
   );
 };
 export default UpdateCategories;
