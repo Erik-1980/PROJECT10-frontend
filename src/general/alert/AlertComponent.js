@@ -119,3 +119,29 @@ export const InfoAlert = ({ message, onConfirm, onCancel }) => {
     </div>
   );
 };
+
+export const Info = ({ message, onConfirm, onCancel }) => {
+   
+  const messages = <span>Info</span>
+  return (
+    <div className={styles.alert}>
+      <Alert
+        message={messages}
+        description={message}
+        type="info"
+        action={
+          <Space direction="vertical">
+            <Button size="small" type="primary" onClick={onConfirm} className={styles.accept}>
+              Continue
+            </Button>
+            <Button size="small" danger type="ghost" onClick={onCancel} className={styles.decline}>
+              Decline
+            </Button>
+          </Space>
+        }
+        closable={onCancel}
+        onClose={onCancel}
+      />
+    </div>
+  );
+};

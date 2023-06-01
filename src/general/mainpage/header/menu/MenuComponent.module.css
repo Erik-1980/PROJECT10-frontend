@@ -4,3 +4,8 @@
     background-color: black;
     border: 3px solid red;
 }
+
+.right {
+    float: right;
+    position: absolute;
+}

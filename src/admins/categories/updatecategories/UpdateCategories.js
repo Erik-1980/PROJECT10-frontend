@@ -1,4 +1,5 @@
 import { Form, Table, Typography, Input } from 'antd';
+import { EditOutlined, DeleteOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './UpdateCategories.module.css';
@@ -148,7 +149,7 @@ const UpdateCategories = () => {
           key: key,
           title: key,
           dataIndex: key,
-          width: '40%',
+          width: '42%',
           editable: true,
         };
         columns.push(column);
@@ -165,16 +166,16 @@ const UpdateCategories = () => {
               <Typography.Link
                 onClick={() => save(record.key)}
                 style={{
-                  marginRight: 8,
+                  paddingRight: 30
                 }}
               >
-                change
+                <SaveOutlined />
               </Typography.Link>
-              <Typography.Link onClick={cancel}>cancel</Typography.Link>
+              <Typography.Link onClick={cancel}><CloseOutlined /></Typography.Link>
             </span>
           ) : (
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-              edit
+              <EditOutlined />
             </Typography.Link>
           );
         },
@@ -184,7 +185,7 @@ const UpdateCategories = () => {
         dataIndex: 'delete',
         render: (_, record) => (
           <Typography.Link onClick={() => deleteCategory(record.id)}>
-            delete
+            <DeleteOutlined />
           </Typography.Link>
         ),
       }

@@ -31,6 +31,7 @@ const MenuComponent = () => {
   const admin = admins.find((value) => {
     return value === email;
   });
+
   const items = [
     getItem(<Link to="/">home</Link>, '1', <HomeOutlined />),
     getItem(<Link to="/about">about Us</Link>, '2', <LikeOutlined />),
@@ -39,7 +40,7 @@ const MenuComponent = () => {
     getItem('write to Us', '5', <MailOutlined />),
     getItem('category', 'sub1', <AppstoreOutlined />,
       categories?.map((value) => (
-        getItem(value.name, 'category'+value.id)
+        getItem(value.name, 'category' + value.id)
       ))
     ),
     getItem('price', 'sub2', <DollarOutlined />, [

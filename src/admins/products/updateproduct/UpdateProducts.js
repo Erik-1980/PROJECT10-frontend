@@ -1,4 +1,5 @@
 import { Form, Table, Typography, Input, InputNumber, Select } from 'antd';
+import { EditOutlined, DeleteOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './UpdateProducts.module.css';
@@ -204,16 +205,16 @@ const UpdateProducts = () => {
               <Typography.Link
                 onClick={() => save(record.key)}
                 style={{
-                  marginRight: 8,
+                  marginRight: 30,
                 }}
               >
-                change
+                <SaveOutlined />
               </Typography.Link>
-              <Typography.Link onClick={cancel}>cancel</Typography.Link>
+              <Typography.Link onClick={cancel}><CloseOutlined /></Typography.Link>
             </span>
           ) : (
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-              edit
+              <EditOutlined />
             </Typography.Link>
           );
         },
@@ -223,7 +224,7 @@ const UpdateProducts = () => {
         dataIndex: 'delete',
         render: (_, record) => (
           <Typography.Link onClick={() => deleteProduct(record.id)}>
-            delete
+            <DeleteOutlined />
           </Typography.Link>
         ),
       }

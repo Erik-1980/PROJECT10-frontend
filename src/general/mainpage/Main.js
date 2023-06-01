@@ -1,4 +1,3 @@
-// import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React from 'react';
 import HeaderContent from './header/HeaderContent';
@@ -29,7 +28,6 @@ const Main = () => {
                         width={220}
                     >
                         <Menu className={styles.menu}
-                            // mode="inline"
                             items={items}
                             theme='dark'
                         />
