@@ -1,0 +1,29 @@
+.main {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.image {
+    height: 260px;
+}
+
+.column {
+    border: 1px solid black;
+    margin-left: 33px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 210px;
+    height: 374px;
+}
+
+.numberInput {
+    position: absolute;
+    left: 14px;
+    bottom: 50px;
+}
+
+.number {
+    width: 50px;
+    left: 40px;
+    bottom: 0;
+}

@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import { useSelector } from 'react-redux';
 import { admins } from '../../../../config/SetAdmin';
-import { AppstoreOutlined, BankOutlined, HomeOutlined, LikeOutlined, MailOutlined, DollarOutlined, CarOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, BankOutlined, HomeOutlined, LikeOutlined, MailOutlined, DollarOutlined, CarOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import styles from './MenuComponent.module.css';
 import { Link } from 'react-router-dom';
@@ -20,6 +20,7 @@ const MenuComponent = () => {
 
   const token = useSelector((state) => state.auth.token);
   const categories = useSelector((state) => state.category.categories);
+  const products = useSelector((state) => state.cart.carts);
   const getEmailFromToken = () => {
     if (token) {
       const decodedToken = jwt_decode(token);
@@ -47,16 +48,17 @@ const MenuComponent = () => {
       getItem('Option 9', '9'),
       getItem('Option 10', '10'),
     ]),
-    admin && getItem(<Link to="/admin">admin</Link>, '11', <UserOutlined />),
+    admin && getItem(<Link to="/admin">admin</Link>, '11', <UserOutlined />)
   ];
 
   return (
-    <div>
+    <div className={styles.main}>
       <Menu className={styles.menu}
         mode="horizontal"
         theme="dark"
         items={items}
       />
+      {token && <Link to="/cart" className={styles.cart}><span className={styles.cartscount}>{products?.length}</span><ShoppingCartOutlined /></Link>}
     </div>
   );
 };

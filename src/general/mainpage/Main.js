@@ -2,10 +2,10 @@ import { Layout, Menu } from 'antd';
 import React from 'react';
 import HeaderContent from './header/HeaderContent';
 import CarouselComponent from './carousel/CarouselComponent';
-import BestProduct from './bestproduct/BestProduct';
+import BestProducts from './bestproduct/BestProducts';
 import { useSelector } from 'react-redux';
 import styles from './Main.module.css';
-
+import FeedbackList from './feedbacklist/FeedbackList';
 
 const Main = () => {
     const { Content, Sider } = Layout;
@@ -25,7 +25,7 @@ const Main = () => {
                 <HeaderContent />
                 <Layout>
                     <Sider
-                        width={220}
+                        width={200}
                     >
                         <Menu className={styles.menu}
                             items={items}
@@ -39,7 +39,8 @@ const Main = () => {
                     >
                         <Content className={styles.content} >
                             <CarouselComponent />
-                            <BestProduct />
+                            <BestProducts />
+                            <FeedbackList />
                         </Content>
                     </Layout>
                 </Layout>

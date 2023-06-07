@@ -14,7 +14,7 @@ const Cap = () => {
   const [confirm, setConfirm] = useState(false);
   const token = useSelector((state) => state.auth.token);
   let isVerify = false;
-  let user = 'account';
+  let user = <p style={{color: 'red'}}>you are not authorized</p>
   let showLink;
   const confirmIcon = (<CheckCircleTwoTone twoToneColor="#52c41a" />);
   const banIcon = (<CheckCircleTwoTone twoToneColor="#ff0000" />);

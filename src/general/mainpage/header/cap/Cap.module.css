@@ -1,7 +1,15 @@
+.main {
+    background-color: black;
+    width: 100%;
+    position: absolute;
+    height: 62px;
+}
+
 .brandName {
     color: red;
     font-size: 36px;
     font-weight: bolder;
+    margin-left: 70px;
 }
 
 @media (max-width: 767px) {
@@ -15,15 +23,15 @@
 }
 
 .icon {
-    color: white;
     font-size: 26px;
-    margin-left: 150px;
+    float: right;
     cursor: pointer;
+    margin-right: 30px;
 }
 
 @media (max-width: 767px) {
     .icon {
-        padding-left: 10px;
+        margin-left: 10px;
     }
 }
 
@@ -32,10 +40,9 @@
 }
 
 .phoneicon {
-    position: absolute;
     color: white;
     font-size: 18px;
-    padding-left: 58%;
+    margin-left: 50%;
 }
 
 @media (max-width: 767px) {
@@ -45,17 +52,16 @@
 }
 
 .verify {
-    margin-left: 60px;
-    z-index: 999;
+    margin-left: 10%;
 }
 
 .userName {
     position: absolute;
-    margin-left: -36px;
+    margin-left: -70px;
     margin-top: 20px;
     font-size: 10px;
-    font-weight: 500;
     color: green;
+    font-weight: 400;
 }
 
 .userIcon {

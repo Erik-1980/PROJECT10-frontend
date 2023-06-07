@@ -31,7 +31,5 @@ export const verificationToken = async (url, options = {}) => {
       localStorage.clear()
       window.location.href = "/";
     };
-  } else {
-    window.location.href = "/";
-  }
+  };
 };

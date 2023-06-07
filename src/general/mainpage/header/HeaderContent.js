@@ -9,9 +9,7 @@ const HeaderContent = () => {
         <div className={styles.header}>
             <Header
                 style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: 'black'
+                    paddingLeft: '0px'
                 }}
             >
                 <Cap />

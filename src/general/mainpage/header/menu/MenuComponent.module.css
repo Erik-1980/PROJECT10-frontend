@@ -1,11 +1,30 @@
 .menu {
+    color: white;
+    background-color: black;
+    width: 95%;
+}
+
+.main {
+    display: flex;
     margin-bottom: 1px;
     color: white;
     background-color: black;
     border: 3px solid red;
 }
 
-.right {
-    float: right;
+.cart {
+    color: white;
+    font-size: 26px;
+    margin-left: 20px;
+    margin-top: 6px;
+}
+
+.cartscount {
+    font-size: 12px;
+    background-color: red;
+    padding: 1px 5px;
+    border-radius: 10px;
     position: absolute;
+    right: 24px;
+    bottom: 30px;
 }
