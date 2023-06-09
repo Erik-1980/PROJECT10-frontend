@@ -1,4 +1,4 @@
-import { Form, Table, Typography, Input, InputNumber, Select } from 'antd';
+import { Form, Table, Typography, Input, InputNumber, Select, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,6 +6,8 @@ import styles from './UpdateProducts.module.css';
 import { verificationToken } from '../../../verificationToken/VerificationToken';
 import { SuccessAlert, ErrorAlert, InfoAlert } from '../../../general/alert/AlertComponent';
 import fetchProducts from '../getproducts/GetProducts';
+import { UpdateProporties } from '../craeteproduct/proporties/UpdateProporties';
+import { setProporty } from '../../../redux/slices/proportySlice';
 
 const { Option } = Select;
 
@@ -13,10 +15,12 @@ const UpdateProducts = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
   const product = useSelector((state) => state.product.products);
+  const proporty = useSelector((state) => state.proporty.proporties);
   const token = useSelector((state) => state.auth.token);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
 
   const products = product?.map(obj => {
@@ -46,10 +50,10 @@ const UpdateProducts = () => {
           message: `Please Input ${title}!`,
         },
       ];
-    }
+    };
     const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'select' ? <Select>{filteredCategories?.map((values) => (
       <Option key={values.id} value={values.id}>{values.name}</Option>
-    ))}</Select> : <Input autoComplete="off" />;
+    ))}</Select> : inputType === 'proporties' ? <Button style={{ backgroundColor: 'red', fontFamily: 'fantasy' }} onClick={showProporty}>edit proporties</Button> : <Input autoComplete="off" />
     return (
       <td {...restProps}>
         {editing ? (
@@ -73,6 +77,7 @@ const UpdateProducts = () => {
   const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record.id === editingKey;
   const edit = (record) => {
+    dispatch(setProporty());
     form.setFieldsValue({
       name: '',
       brand: '',
@@ -84,6 +89,7 @@ const UpdateProducts = () => {
   };
   const cancel = () => {
     setEditingKey('');
+    dispatch(setProporty());
   };
   const save = async () => {
     setMessage('');
@@ -108,11 +114,12 @@ const UpdateProducts = () => {
       const description = row.description;
       const categoryId = categ
       const id = editingKey;
+      const proporties = JSON.stringify(proporty)
       const url = 'http://localhost:5000/product/updateproduct';
       try {
         const response = await verificationToken(url, {
           method: "PUT",
-          body: JSON.stringify({ id, name, brand, model, price, quantity, discount, categoryId, description }),
+          body: JSON.stringify({id, name, brand, model, price, quantity, discount, categoryId, description, proporties}),
           headers: {
             "Content-Type": "application/json",
             Authorization: token,
@@ -176,16 +183,20 @@ const UpdateProducts = () => {
 
   if (products) {
     Object.keys(products[0]).forEach((key) => {
-      if (key === 'name' || key === 'brand' || key === 'model' || key === 'price' || key === 'quantity' || key === 'discount' || key === 'description' || key === 'category' || key === 'image') {
+      if (key === 'name' || key === 'brand' || key === 'model' || key === 'price' || key === 'quantity' || key === 'discount' || key === 'description' || key === 'category' || key === 'image' || key === 'proporties') {
         const column = {
           key: key,
           title: key,
           dataIndex: key,
-          width: key === 'description' || key === 'model' ? '13%' : '8%',
+          width: key === 'description'  ? '10%' : '8%',
           editable: true,
           render: (text, record) => {
             if (key === 'image') {
               return <img src={`http://localhost:5000/${text}`} alt={record.name} width={40} />;
+            } else if (key === 'proporties') {
+              const proporties = record.proporties ? JSON.parse(record.proporties) : {};
+              const keys = Object.keys(proporties);
+              return (keys[0] ? keys[0] + ': ' + proporties?.[keys[0]] + ' ...' : '')
             } else {
               return text;
             }
@@ -238,13 +249,24 @@ const UpdateProducts = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'price' || col.dataIndex === 'quantity' || col.dataIndex === 'discount' ? 'number' : col.dataIndex === 'category' ? 'select' : 'text',
+        inputType: col.dataIndex === 'price' || col.dataIndex === 'quantity' || col.dataIndex === 'discount' ? 'number' : col.dataIndex === 'category' ? 'select' : col.dataIndex === 'proporties' ? 'proporties' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
       }),
     };
   });
+
+  const showProporty = () => {
+    setShowModal(true);
+    dispatch(setProporty());
+
+  };
+
+  const closeAlertProporties = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className={styles.main}>
       <Form form={form} component={false}>
@@ -267,6 +289,7 @@ const UpdateProducts = () => {
             />
           }
         </>
+        {showModal && <UpdateProporties categoryId={form.getFieldValue('categoryId')} id={editingKey} onConfirm={closeAlertProporties} onCancel={closeAlertProporties} />}
         <Table
           components={{
             body: {

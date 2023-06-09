@@ -75,13 +75,13 @@ const BestProducts = () => {
                 }
                 actions={[
                   <Tooltip title='Add to cart'><HeartOutlined key={product.id} style={{ color: 'red', fontWeight: 'bold' }} onClick={() => addToCart(product.id)} /></Tooltip>,
-                  <span style={{ color: 'red', fontWeight: 'bold' }}><LikeOutlined key={product.id} />buy now</span>,
+                  <span style={{ color: 'red', fontFamily: 'fantasy' }}><LikeOutlined key={product.id} />buy now</span>,
                 ]}
               >
                 <Meta
-                  title={<span style={{ color: 'black', position: 'absolute', marginTop: '-12px', marginLeft: '-10px' }}>{product.name}  {product.model}</span>}
+                  title={<span style={{ color: 'black', position: 'absolute', marginTop: '-12px', marginLeft: '-10px', fontFamily: 'fantasy', fontWeight: '400' }}>{product.name}  {product.model}</span>}
                   description={
-                    <span style={{ color: 'black', position: 'absolute', fontWeight: 'bold', marginLeft: '-10px' }}>
+                    <span style={{ color: 'black', position: 'absolute', marginLeft: '-10px', fontFamily: 'fantasy' }}>
                       price: {product.discount === 0 ? product.price + '$' : <del>{product.price}$</del>}
                       <span style={{ color: 'red', marginLeft: '10px' }}>{product.discount !== 0 && Math.round((product.price - (product.price * product.discount / 100)) / 10) * 10 - 5 + '$'}
                       </span>

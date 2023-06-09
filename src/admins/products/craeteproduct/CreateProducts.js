@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { SuccessAlert, ErrorAlert } from '../../../general/alert/AlertComponent';
 import fetchProducts from '../getproducts/GetProducts';
+import { CreateProporties } from './proporties/CreateProporties';
+import { setProporty } from '../../../redux/slices/proportySlice';
 
 const { Option } = Select;
 
@@ -20,9 +22,12 @@ export default function CreateProducts() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const categories = useSelector((state) => state.category.categories);
+  const proporties = useSelector((state) => state.proporty.proporties);
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
@@ -40,6 +45,7 @@ export default function CreateProducts() {
       formData.append('quantity', values.quantity);
       formData.append('description', values.description);
       formData.append('categoryId', values.categoryId);
+      formData.append('proporties', JSON.stringify(proporties));
       const response = await verificationToken(url, {
         method: "POST",
         body: formData,
@@ -51,6 +57,7 @@ export default function CreateProducts() {
       if (data.message) {
         setMessage(data.message);
         fetchProducts(dispatch);
+        dispatch(setProporty());
         form.resetFields();
       } else if (data.message_error) {
         setError(data.message_error);
@@ -66,6 +73,15 @@ export default function CreateProducts() {
   const handleImageUpload = (file) => {
     setImage(file.file);
   };
+
+  const showAlertProporties = ()=> {
+    dispatch(setProporty());
+    setShowModal(true)
+  };
+
+  const closeAlertProporties = ()=> {
+    setShowModal(false)
+  }
 
   return (
     <div className={styles.products}>
@@ -245,11 +261,16 @@ export default function CreateProducts() {
             offset: 8,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button style={{backgroundColor: 'red', fontFamily: 'fantasy'}} onClick={showAlertProporties}>
+            additional proporties
+          </Button>
+          <Button type="primary" htmlType="submit" style={{marginLeft: '100px', fontFamily: 'fantasy'}}>
             create product
           </Button>
         </Form.Item>
       </Form>
+      {showModal && <CreateProporties categoryId={form.getFieldValue('categoryId')} onCancel={closeAlertProporties} onConfirm={closeAlertProporties}/>}
+
     </div>
   );
 };

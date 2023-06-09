@@ -115,7 +115,7 @@ function CreateCategory() {
             offset: 8,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{fontFamily: 'fantasy'}}>
             create category
           </Button>
         </Form.Item>

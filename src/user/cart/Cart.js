@@ -77,12 +77,12 @@ const Cart = () => {
                                 }
                                 actions={[
                                     <Tooltip title='Remove from cart'><DeleteOutlined key={prod.id} style={{ color: 'red', fontWeight: 'bold' }} onClick={() => removeFromCart(element.id)} /></Tooltip>,
-                                    <span style={{ color: 'red', fontWeight: 'bold' }}><LikeOutlined key={prod.id} />buy now</span>,
+                                    <span style={{ color: 'red', fontFamily: 'fantasy' }}><LikeOutlined key={prod.id} />buy now</span>,
                                 ]}
                             >
                                 <Meta style={{ marginTop: '10px' }}
-                                    title={<span style={{ color: 'black', position: 'absolute', marginTop: '-42px', marginLeft: '-10px' }}>{prod.name}  {prod.model}</span>}
-                                    description={<span style={{ color: 'black', position: 'absolute', marginTop: '-26px', fontWeight: 'bold', marginLeft: '-10px' }}>price: {prod.discount === 0 ? prod.price + '$' : <del>{prod.price}$</del>}
+                                    title={<span style={{ color: 'black', position: 'absolute', marginTop: '-42px', marginLeft: '-10px', fontFamily: 'fantasy', fontWeight: '400' }}>{prod.name}  {prod.model}</span>}
+                                    description={<span style={{ color: 'black', position: 'absolute', marginTop: '-26px', marginLeft: '-10px', fontFamily: 'fantasy' }}>price: {prod.discount === 0 ? prod.price + '$' : <del>{prod.price}$</del>}
                                         <span style={{ color: 'red', marginLeft: '10px' }}>{prod.discount !== 0 && Math.round((prod.price - (prod.price * prod.discount / 100)) / 10) * 10 - 5 + '$'}
                                         </span>
                                     </span>
