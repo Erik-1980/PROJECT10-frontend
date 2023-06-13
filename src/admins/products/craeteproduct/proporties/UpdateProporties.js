@@ -576,9 +576,9 @@ export const UpdateProporties = ({ categoryId, id, onConfirm, onCancel }) => {
                                         onFinish={onFinish}
                                     >
                                         <Form.Item
-                                            name='ISO sensitivity'
-                                            label='ISO sensitivity'
-                                            initialValue={proporties['ISO sensitivity']}  >
+                                            name='Matrix Size'
+                                            label='Matrix Size'
+                                            initialValue={proporties['Matrix Size']}  >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
@@ -594,9 +594,9 @@ export const UpdateProporties = ({ categoryId, id, onConfirm, onCancel }) => {
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
-                                            name='Video quality'
-                                            label='Video quality'
-                                            initialValue={proporties['Video quality']}  >
+                                            name='Memory Card Type'
+                                            label='Memory Card Type'
+                                            initialValue={proporties['Memory Card Type']}  >
                                             <Input />
                                         </Form.Item>
                                         <Button size="small" type="primary" htmlType="submit" className={styles.accept}>

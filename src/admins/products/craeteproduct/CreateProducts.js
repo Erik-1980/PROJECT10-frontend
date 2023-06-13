@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Upload, Select } from 'antd';
+import { Button, Form, Input, InputNumber, Upload, Select, Checkbox } from 'antd';
 import styles from './CreateProducts.module.css';
 import { verificationToken } from '../../../verificationToken/VerificationToken';
 import { useSelector, useDispatch } from 'react-redux';
@@ -27,6 +27,7 @@ export default function CreateProducts() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -37,7 +38,7 @@ export default function CreateProducts() {
     try {
       const formData = new FormData();
       formData.append('image', image);
-      formData.append('brand', values.brand);
+      formData.append('best', isChecked);
       formData.append('name', values.name);
       formData.append('model', values.model);
       formData.append('discount', values.discount);
@@ -59,6 +60,7 @@ export default function CreateProducts() {
         fetchProducts(dispatch);
         dispatch(setProporty());
         form.resetFields();
+        setIsChecked(false)
       } else if (data.message_error) {
         setError(data.message_error);
       } else if (data.error) {
@@ -74,12 +76,12 @@ export default function CreateProducts() {
     setImage(file.file);
   };
 
-  const showAlertProporties = ()=> {
+  const showAlertProporties = () => {
     dispatch(setProporty());
     setShowModal(true)
   };
 
-  const closeAlertProporties = ()=> {
+  const closeAlertProporties = () => {
     setShowModal(false)
   }
 
@@ -105,22 +107,6 @@ export default function CreateProducts() {
         }}
       >
         <h2 className={styles.header}>Create product</h2>
-        <Form.Item
-          name="brand"
-          label={
-            <span className={styles.label}>
-              brand
-            </span>
-          }
-          rules={[
-            {
-              required: true,
-              message: 'Please input product brand!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
         <Form.Item
           name="name"
           label={
@@ -256,20 +242,35 @@ export default function CreateProducts() {
           </Select>
         </Form.Item>
         <Form.Item
+          name="best"
+          label={
+            <span className={styles.label}>
+              best
+            </span>
+          }
+          valuePropName="checked"
+        >
+          <Checkbox
+            style={{ color: 'white' }}
+            onChange={(element) => setIsChecked(element.target.checked)}
+          >
+            show product on homepage</Checkbox>
+        </Form.Item>
+        <Form.Item
           wrapperCol={{
             ...layout.wrapperCol,
             offset: 8,
           }}
         >
-          <Button style={{backgroundColor: 'red', fontFamily: 'fantasy'}} onClick={showAlertProporties}>
+          <Button style={{ backgroundColor: 'red', fontFamily: 'fantasy' }} onClick={showAlertProporties}>
             additional proporties
           </Button>
-          <Button type="primary" htmlType="submit" style={{marginLeft: '100px', fontFamily: 'fantasy'}}>
+          <Button type="primary" htmlType="submit" style={{ marginLeft: '100px', fontFamily: 'fantasy' }}>
             create product
           </Button>
         </Form.Item>
       </Form>
-      {showModal && <CreateProporties categoryId={form.getFieldValue('categoryId')} onCancel={closeAlertProporties} onConfirm={closeAlertProporties}/>}
+      {showModal && <CreateProporties categoryId={form.getFieldValue('categoryId')} onCancel={closeAlertProporties} onConfirm={closeAlertProporties} />}
 
     </div>
   );

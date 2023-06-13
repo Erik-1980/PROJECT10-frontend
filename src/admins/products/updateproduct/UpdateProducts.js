@@ -1,4 +1,4 @@
-import { Form, Table, Typography, Input, InputNumber, Select, Button } from 'antd';
+import { Form, Table, Typography, Input, InputNumber, Select, Button, Checkbox } from 'antd';
 import { EditOutlined, DeleteOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,6 +22,8 @@ const UpdateProducts = () => {
   const [confirm, setConfirm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
+  const [checkedValues, setCheckedValues] = useState();
+  const [editingKey, setEditingKey] = useState('');
 
   const products = product?.map(obj => {
     const { 'category.name': categoryName, ...rest } = obj;
@@ -43,7 +45,7 @@ const UpdateProducts = () => {
     ...restProps
   }) => {
     let rules = [];
-    if (dataIndex === 'brand' || dataIndex === 'name' || dataIndex === 'model' || dataIndex === 'price' || dataIndex === 'quantity' || dataIndex === 'discount') {
+    if (dataIndex === 'name' || dataIndex === 'model' || dataIndex === 'price' || dataIndex === 'quantity' || dataIndex === 'discount') {
       rules = [
         {
           required: true,
@@ -51,9 +53,13 @@ const UpdateProducts = () => {
         },
       ];
     };
+    const handleChangeChecked = (event) => {
+      const { checked } = event.target;
+      setCheckedValues(checked);
+    };
     const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'select' ? <Select>{filteredCategories?.map((values) => (
       <Option key={values.id} value={values.id}>{values.name}</Option>
-    ))}</Select> : inputType === 'proporties' ? <Button style={{ backgroundColor: 'red', fontFamily: 'fantasy' }} onClick={showProporty}>edit proporties</Button> : <Input autoComplete="off" />
+    ))}</Select> : inputType === 'proporties' ? <Button style={{ backgroundColor: 'red', fontFamily: 'fantasy' }} onClick={showProporty}>edit proporties</Button> : inputType === 'checkbox' ? <Checkbox checked={checkedValues} name={record.id} onChange={handleChangeChecked}></Checkbox> : <Input autoComplete="off" />
     return (
       <td {...restProps}>
         {editing ? (
@@ -74,15 +80,12 @@ const UpdateProducts = () => {
   };
 
   const [form] = Form.useForm();
-  const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record.id === editingKey;
   const edit = (record) => {
     dispatch(setProporty());
+    setCheckedValues(record.best)
     form.setFieldsValue({
-      name: '',
-      brand: '',
-      model: '',
-      description: '',
+      [record.best]: checkedValues,
       ...record,
     });
     setEditingKey(record.id);
@@ -106,7 +109,7 @@ const UpdateProducts = () => {
         };
       }
       const name = row.name;
-      const brand = row.brand;
+      const best = checkedValues;
       const model = row.model;
       const price = row.price;
       const quantity = row.quantity;
@@ -119,7 +122,7 @@ const UpdateProducts = () => {
       try {
         const response = await verificationToken(url, {
           method: "PUT",
-          body: JSON.stringify({id, name, brand, model, price, quantity, discount, categoryId, description, proporties}),
+          body: JSON.stringify({ id, name, best, model, price, quantity, discount, categoryId, description, proporties }),
           headers: {
             "Content-Type": "application/json",
             Authorization: token,
@@ -130,8 +133,8 @@ const UpdateProducts = () => {
           setMessage(data.message);
           fetchProducts(dispatch);
           setEditingKey('');
-        } else if (data.error) {
-          setError(data.error)
+        } else if (data.message_error) {
+          setError(data.message_error)
         } else {
           setError('something went wrong, please try again later');
         };
@@ -180,23 +183,24 @@ const UpdateProducts = () => {
     };
   };
   const columns = [];
-
-  if (products) {
+  if (products && products.length !== 0) {
     Object.keys(products[0]).forEach((key) => {
-      if (key === 'name' || key === 'brand' || key === 'model' || key === 'price' || key === 'quantity' || key === 'discount' || key === 'description' || key === 'category' || key === 'image' || key === 'proporties') {
+      if (key === 'name' || key === 'best' || key === 'model' || key === 'price' || key === 'quantity' || key === 'discount' || key === 'description' || key === 'category' || key === 'image' || key === 'proporties') {
         const column = {
           key: key,
           title: key,
           dataIndex: key,
-          width: key === 'description'  ? '10%' : '8%',
+          width: key === 'description' ? '10%' : '8%',
           editable: true,
           render: (text, record) => {
-            if (key === 'image') {
+            if (key === 'best') {
+              return <Checkbox checked={text === 1} name={key} />;
+            } else if (key === 'image') {
               return <img src={`http://localhost:5000/${text}`} alt={record.name} width={40} />;
             } else if (key === 'proporties') {
               const proporties = record.proporties ? JSON.parse(record.proporties) : {};
               const keys = Object.keys(proporties);
-              return (keys[0] ? keys[0] + ': ' + proporties?.[keys[0]] + ' ...' : '')
+              return keys[0] ? keys[0] + ': ' + proporties?.[keys[0]] + ' ...' : '';
             } else {
               return text;
             }
@@ -249,7 +253,7 @@ const UpdateProducts = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'price' || col.dataIndex === 'quantity' || col.dataIndex === 'discount' ? 'number' : col.dataIndex === 'category' ? 'select' : col.dataIndex === 'proporties' ? 'proporties' : 'text',
+        inputType: col.dataIndex === 'price' || col.dataIndex === 'quantity' || col.dataIndex === 'discount' ? 'number' : col.dataIndex === 'category' ? 'select' : col.dataIndex === 'proporties' ? 'proporties' : col.dataIndex === 'best' ? 'checkbox' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),

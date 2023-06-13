@@ -1,21 +1,35 @@
 import { LikeOutlined, HeartOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Tooltip } from 'antd';
+import { Card, Col, Row, Tooltip, Pagination } from 'antd';
 import styles from './BestProducts.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { SuccessAlert, ErrorAlert } from '../../../general/alert/AlertComponent';
 import { verificationToken } from '../../../verificationToken/VerificationToken';
 import fetchCart from '../../../user/cart/getcart/GetCart';
+import { Link } from 'react-router-dom';
 
 const { Meta } = Card;
 
 const BestProducts = () => {
 
-  const products = useSelector((state) => state.product.products);
+  const product = useSelector((state) => state.product.products);
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 12;
+
+  const products = product?.filter(obj => obj.best === 1)
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedProducts = products?.slice(startIndex, endIndex);
+
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
+  };
 
   const addToCart = async (id) => {
     setMessage('');
@@ -54,7 +68,7 @@ const BestProducts = () => {
         />
       }
       <Row gutter={16}>
-        {products?.map((product) => {
+        {displayedProducts?.map((product) => {
           if (product.quantity === 0) {
             return null;
           }
@@ -63,14 +77,16 @@ const BestProducts = () => {
               <Card
                 cover={
                   <>
-                    <img
-                      src={`http://localhost:5000/${product.image}`}
-                      alt={product.name}
-                      className={styles.image}
-                    />
+                    <Link to={`/showproduct/${product.id}`}>
+                      <img
+                        src={`http://localhost:5000/${product.image}`}
+                        alt={product.name}
+                        className={styles.image}
+                      />
+                    </Link>
                     <img src='/image/hit1.png' className={styles.bestIcon} style={{ width: '22em' }} alt='' />
-                    {product.old_price && product.old_price > product.price ? <img src='/image/price.png' className={styles.priceIcon} style={{ width: '5em' }} alt='' /> : null }
-                    
+                    {product.old_price && product.old_price > product.price ? <img src='/image/price.png' className={styles.priceIcon} style={{ width: '5em' }} alt='' /> : null}
+
                   </>
                 }
                 actions={[
@@ -93,6 +109,13 @@ const BestProducts = () => {
           )
         })}
       </Row>
+      <Pagination
+        current={currentPage}
+        total={products?.length}
+        pageSize={itemsPerPage}
+        onChange={handleChangePage}
+        className={styles.pagination}
+      />
     </div>
   )
 };

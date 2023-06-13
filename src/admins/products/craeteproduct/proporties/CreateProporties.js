@@ -525,8 +525,8 @@ export const CreateProporties = ({ categoryId, onConfirm, onCancel }) => {
                                         onFinish={onFinish}
                                     >
                                         <Form.Item
-                                            name='ISO sensitivity'
-                                            label='ISO sensitivity' >
+                                            name='Matrix Size'
+                                            label='Matrix Size' >
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
@@ -540,8 +540,8 @@ export const CreateProporties = ({ categoryId, onConfirm, onCancel }) => {
                                             <Input />
                                         </Form.Item>
                                         <Form.Item
-                                            name='Video quality'
-                                            label='Video quality' >
+                                            name='Memory Card Type'
+                                            label='Memory Card Type' >
                                             <Input />
                                         </Form.Item>
                                         <Button size="small" type="primary" htmlType="submit" className={styles.accept}>

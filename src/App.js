@@ -6,6 +6,7 @@ import Banks from './general/banks/Banks';
 import Delivery from './general/delivery&payments/Delivery&Payments';
 import AdminRoute from './admins/AdminRoute';
 import Cart from './user/cart/Cart';
+import ShowProduct from './general/product/ShowProduct';
 import fetchCategories from './admins/categories/getcategories/GetCategories';
 import fetchProducts from './admins/products/getproducts/GetProducts';
 import fetchCart from './user/cart/getcart/GetCart';
@@ -38,6 +39,7 @@ function App() {
           <Route path='/banks' element={<Banks />} />
           <Route path='/delivery' element={<Delivery />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/showproduct/:id' element={<ShowProduct />} />
           <Route path='/admin/*' element={<AdminRoute />} />
         </Routes>
       </BrowserRouter>
