@@ -4,26 +4,29 @@
 }
 
 .image {
-    height: 200px;
-}
-
-.bestIcon {
-    position: absolute;
-    top: -21px;
-    right: -44px;
+    height: 500px;
 }
 
 .priceIcon {
     position: absolute;
-    top: -12px;
-    left: -10px;
+    top: 10px;
+    left: 50px;
 }
 
-.column {
-    border: 1px solid black;
-    margin-left: 5px;
-    margin-top: 10px;
-    border-radius: 5px;
-    width: 210px;
-    height: 300px;
+.proporties {
+    float: right;
+    position: absolute;
+    left: 520px;
+    top: 60px;
+}
+
+.title {
+    color: black;
+    font-family: fantasy;
+    font-weight: '400';
+}
+
+p, li {
+    color: black;
+    font-family: fantasy
 }
