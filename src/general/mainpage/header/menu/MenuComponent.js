@@ -40,9 +40,11 @@ const MenuComponent = () => {
     getItem(<Link to="/delivery">delivery and payments</Link>, '4', <CarOutlined />),
     getItem('write to Us', '5', <MailOutlined />),
     getItem('category', 'sub1', <AppstoreOutlined />,
-      categories?.map((value) => (
-        getItem(value.name, 'category' + value.id)
-      ))
+      categories?.map((value) => {
+        const link = <Link to={`/showcategory/${value.id}`} key={value.id}>{value.name}</Link>
+        return getItem(link, 'category' + value.id)
+
+      })
     ),
     getItem('price', 'sub2', <DollarOutlined />, [
       getItem('Option 9', '9'),

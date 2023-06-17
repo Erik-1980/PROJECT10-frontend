@@ -5,8 +5,9 @@ import AboutUs from './general/aboutUs/AboutUs';
 import Banks from './general/banks/Banks';
 import Delivery from './general/delivery&payments/Delivery&Payments';
 import AdminRoute from './admins/AdminRoute';
-import Cart from './user/cart/Cart';
-import ShowProduct from './general/product/ShowProduct';
+import ByCart from './general/mainpage/ByCart';
+import ByProduct from './general/mainpage/ByProduct';
+import ByCategory from './general/mainpage/ByCategory';
 import fetchCategories from './admins/categories/getcategories/GetCategories';
 import fetchProducts from './admins/products/getproducts/GetProducts';
 import fetchCart from './user/cart/getcart/GetCart';
@@ -38,8 +39,9 @@ function App() {
           <Route path='/about' element={<AboutUs />} />
           <Route path='/banks' element={<Banks />} />
           <Route path='/delivery' element={<Delivery />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/showproduct/:id' element={<ShowProduct />} />
+          <Route path='/cart' element={<ByCart />} />
+          <Route path='/showproduct/:id' element={<ByProduct />} />
+          <Route path='/showcategory/:id' element={<ByCategory />} />
           <Route path='/admin/*' element={<AdminRoute />} />
         </Routes>
       </BrowserRouter>

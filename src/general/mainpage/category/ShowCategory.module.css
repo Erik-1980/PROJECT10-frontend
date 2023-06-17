@@ -1,0 +1,29 @@
+.page {
+    max-width: 1500px;
+    margin-left: 10px;
+}
+
+.image {
+    height: 200px;
+}
+
+.bestIcon {
+    position: absolute;
+    top: -21px;
+    right: -44px;
+}
+
+.priceIcon {
+    position: absolute;
+    top: -12px;
+    left: -10px;
+}
+
+.column {
+    border: 1px solid black;
+    margin-left: 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 210px;
+    height: 300px;
+}

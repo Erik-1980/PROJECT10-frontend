@@ -2,7 +2,6 @@ import { LikeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Tooltip, InputNumber } from 'antd';
 import styles from './Cart.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import HeaderContent from '../../general/mainpage/header/HeaderContent';
 import { useState } from 'react';
 import { SuccessAlert, ErrorAlert } from '../../general/alert/AlertComponent';
 import { verificationToken } from '../../verificationToken/VerificationToken';
@@ -44,12 +43,11 @@ const Cart = () => {
     };
 
     const handleInputQuantity = (value) => {
-        console.log('changed', value);
-    };
+        console.log(value);
+    };    
 
     return (
         <div className={styles.main}>
-            <HeaderContent />
             {message &&
                 <SuccessAlert
                     message={message}
@@ -77,7 +75,7 @@ const Cart = () => {
                                 }
                                 actions={[
                                     <Tooltip title='Remove from cart'><DeleteOutlined key={prod.id} style={{ color: 'red', fontWeight: 'bold' }} onClick={() => removeFromCart(element.id)} /></Tooltip>,
-                                    <span style={{ color: 'red', fontFamily: 'fantasy' }}><LikeOutlined key={prod.id} />buy now</span>,
+                                    <span style={{ color: 'red', fontFamily: 'fantasy' }} ><LikeOutlined key={prod.id} />buy now</span>,
                                 ]}
                             >
                                 <Meta style={{ marginTop: '10px' }}
