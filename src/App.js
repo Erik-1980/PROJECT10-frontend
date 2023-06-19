@@ -5,14 +5,17 @@ import AboutUs from './general/aboutUs/AboutUs';
 import Banks from './general/banks/Banks';
 import Delivery from './general/delivery&payments/Delivery&Payments';
 import AdminRoute from './admins/AdminRoute';
-import ByCart from './general/mainpage/ByCart';
-import ByProduct from './general/mainpage/ByProduct';
-import ByCategory from './general/mainpage/ByCategory';
+import Cart from './user/cart/Cart';
+import ShowProduct from './general/product/ShowProduct';
+import ShowCategory from './general/mainpage/category/ShowCategory';
 import fetchCategories from './admins/categories/getcategories/GetCategories';
 import fetchProducts from './admins/products/getproducts/GetProducts';
 import fetchCart from './user/cart/getcart/GetCart';
 import { useDispatch } from 'react-redux';
 import jwt_decode from "jwt-decode";
+import MainSceleton from './general/mainpage/skeleton/MainSceleton';
+import Payment from './stripe/Payment';
+import Completion from "./stripe/Complation";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,10 +42,12 @@ function App() {
           <Route path='/about' element={<AboutUs />} />
           <Route path='/banks' element={<Banks />} />
           <Route path='/delivery' element={<Delivery />} />
-          <Route path='/cart' element={<ByCart />} />
-          <Route path='/showproduct/:id' element={<ByProduct />} />
-          <Route path='/showcategory/:id' element={<ByCategory />} />
+          <Route path='/cart' element={<MainSceleton content={<Cart />} />} />
+          <Route path='/showproduct/:id' element={<MainSceleton content={<ShowProduct />} />} />
+          <Route path='/showcategory/:id' element={<MainSceleton content={<ShowCategory />} />} />
           <Route path='/admin/*' element={<AdminRoute />} />
+          <Route path="/payment" element={<MainSceleton content={<Payment />} />} />
+          <Route path="/completion" element={<MainSceleton content={<Completion />} />} />
         </Routes>
       </BrowserRouter>
     </div>

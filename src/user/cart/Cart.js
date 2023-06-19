@@ -3,6 +3,7 @@ import { Card, Col, Row, Tooltip, InputNumber } from 'antd';
 import styles from './Cart.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SuccessAlert, ErrorAlert } from '../../general/alert/AlertComponent';
 import { verificationToken } from '../../verificationToken/VerificationToken';
 import fetchCart from '../../user/cart/getcart/GetCart';
@@ -16,6 +17,8 @@ const Cart = () => {
     const dispatch = useDispatch();
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [quantity, setQuantity] = useState(1);
+
 
     const removeFromCart = async (id) => {
         setMessage('');
@@ -43,8 +46,9 @@ const Cart = () => {
     };
 
     const handleInputQuantity = (value) => {
-        console.log(value);
-    };    
+        setQuantity(value);
+    };
+
 
     return (
         <div className={styles.main}>
@@ -75,7 +79,12 @@ const Cart = () => {
                                 }
                                 actions={[
                                     <Tooltip title='Remove from cart'><DeleteOutlined key={prod.id} style={{ color: 'red', fontWeight: 'bold' }} onClick={() => removeFromCart(element.id)} /></Tooltip>,
-                                    <span style={{ color: 'red', fontFamily: 'fantasy' }} ><LikeOutlined key={prod.id} />buy now</span>,
+                                    <Link to={`/payment?productid=${prod.id}&quantity=${quantity}`} >
+                                        <span style={{ color: 'red', fontFamily: 'fantasy' }}>
+                                            <LikeOutlined key={prod.id} />
+                                            buy now
+                                        </span>
+                                    </Link>
                                 ]}
                             >
                                 <Meta style={{ marginTop: '10px' }}
@@ -87,7 +96,7 @@ const Cart = () => {
                                     }
                                 />
                                 <span className={styles.numberInput}>quantity:
-                                    <InputNumber name='number' className={styles.number} size="small" min={1} max={10} defaultValue={element.quantity} onChange={handleInputQuantity} /></span>
+                                    <InputNumber name='number' className={styles.number} size="small" min={1} max={1000} defaultValue={element.quantity} onChange={handleInputQuantity} /></span>
                             </Card>
                         </Col>
                     );

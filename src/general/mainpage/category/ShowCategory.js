@@ -91,7 +91,12 @@ const ShowCategory = () => {
                                 }
                                 actions={[
                                     <Tooltip title='Add to cart'><HeartOutlined key={product.id} style={{ color: 'red', fontWeight: 'bold' }} onClick={() => addToCart(product.id)} /></Tooltip>,
-                                    <span style={{ color: 'red', fontFamily: 'fantasy' }}><LikeOutlined key={product.id} />buy now</span>,
+                                    <Link to={`/payment?productid=${product.id}&quantity=1`} >
+                                        <span style={{ color: 'red', fontFamily: 'fantasy' }}>
+                                            <LikeOutlined key={product.id} />
+                                            buy now
+                                        </span>
+                                    </Link>
                                 ]}
                             >
                                 <Meta
