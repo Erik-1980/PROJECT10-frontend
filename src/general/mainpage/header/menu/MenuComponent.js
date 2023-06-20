@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import { useSelector } from 'react-redux';
 import { admins } from '../../../../config/SetAdmin';
-import { AppstoreOutlined, BankOutlined, HomeOutlined, LikeOutlined, MailOutlined, DollarOutlined, CarOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, BankOutlined, HomeOutlined, LikeOutlined, MailOutlined, InboxOutlined, CarOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import styles from './MenuComponent.module.css';
 import { Link } from 'react-router-dom';
@@ -46,10 +46,7 @@ const MenuComponent = () => {
 
       })
     ),
-    getItem('price', 'sub2', <DollarOutlined />, [
-      getItem('Option 9', '9'),
-      getItem('Option 10', '10'),
-    ]),
+    getItem(<Link to="/orders">orders</Link>, '6', <InboxOutlined />),
     admin && getItem(<Link to="/admin">admin</Link>, '11', <UserOutlined />)
   ];
 

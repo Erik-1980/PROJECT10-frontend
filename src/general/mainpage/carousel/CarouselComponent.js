@@ -2,22 +2,25 @@ import styles from './CarouselComponent.module.css';
 import { Carousel } from 'antd';
 
 const CarouselComponent = () => {
-    return(
+    return (
         <Carousel autoplay className={styles.contentStyleCarousel}>
-                <div>
-                    <h3 style={{ backgroundImage: 'url("../../../../image/mainpage.jpeg")' }}>1</h3>
-                </div>
-                <div>
-                    <h3 style={{ backgroundImage: 'url("../../../../image/mainpage2.jpeg")' }}>2</h3>
-                </div>
-                <div>
-                    <h3 style={{ backgroundImage: 'url("../../../../image/mainpage3.jpeg")' }}>3</h3>
-                </div>
-                <div>
-                    <h3 style={{ backgroundImage: 'url("../../../../image/mainpage4.jpeg")' }}>4</h3>
-                </div>
-            </Carousel>
-    )
+            <div>
+                <h3 style={{ backgroundImage: 'url("../../../../image/1fon1.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }} aria-hidden="true"></h3>
+            </div>
+            <div>
+                <h3 style={{ backgroundImage: 'url("../../../../image/1fon2.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }} aria-hidden="true"></h3>
+            </div>
+            <div>
+                <h3 style={{ backgroundImage: 'url("../../../../image/1fon3.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }} aria-hidden="true"></h3>
+            </div>
+            <div>
+                <h3 style={{ backgroundImage: 'url("../../../../image/1fon6.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }} aria-hidden="true"></h3>
+            </div>
+            <div>
+                <h3 style={{ backgroundImage: 'url("../../../../image/1fon7.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }} aria-hidden="true"></h3>
+            </div>
+        </Carousel>
+    );
 };
 
-export default CarouselComponent
+export default CarouselComponent;

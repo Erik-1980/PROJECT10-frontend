@@ -16,15 +16,3 @@
     width: 210px;
     height: 313px;
 }
-
-.numberInput {
-    position: absolute;
-    left: 14px;
-    bottom: 50px;
-}
-
-.number {
-    width: 50px;
-    left: 40px;
-    bottom: 0;
-}

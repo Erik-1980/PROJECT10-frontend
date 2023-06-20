@@ -6,11 +6,13 @@ import Banks from './general/banks/Banks';
 import Delivery from './general/delivery&payments/Delivery&Payments';
 import AdminRoute from './admins/AdminRoute';
 import Cart from './user/cart/Cart';
+import Order from './user/order/Order';
 import ShowProduct from './general/product/ShowProduct';
 import ShowCategory from './general/mainpage/category/ShowCategory';
 import fetchCategories from './admins/categories/getcategories/GetCategories';
 import fetchProducts from './admins/products/getproducts/GetProducts';
 import fetchCart from './user/cart/getcart/GetCart';
+import fetchOrder from './user/order/getorder/GetOrder';
 import { useDispatch } from 'react-redux';
 import jwt_decode from "jwt-decode";
 import MainSceleton from './general/mainpage/skeleton/MainSceleton';
@@ -31,6 +33,7 @@ function App() {
       localStorage.clear()
     };
     fetchCart(dispatch);
+    fetchOrder(dispatch);
   };
 
   return (
@@ -43,6 +46,7 @@ function App() {
           <Route path='/banks' element={<Banks />} />
           <Route path='/delivery' element={<Delivery />} />
           <Route path='/cart' element={<MainSceleton content={<Cart />} />} />
+          <Route path='/orders' element={<MainSceleton content={<Order />} />} />
           <Route path='/showproduct/:id' element={<MainSceleton content={<ShowProduct />} />} />
           <Route path='/showcategory/:id' element={<MainSceleton content={<ShowCategory />} />} />
           <Route path='/admin/*' element={<AdminRoute />} />

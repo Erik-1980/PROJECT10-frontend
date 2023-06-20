@@ -14,7 +14,7 @@ const ShowProduct = () => {
 
     return (products && <Card
         cover={
-            <div>
+            <div style={{marginLeft: '50px'}}>
                 <img
                     src={`http://localhost:5000/${product[0].image}`}
                     alt={product[0].name}

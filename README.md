@@ -1,4 +1,4 @@
-# Project Documentation: E-commerce (front-end)
+# Project Documentation: E-commerce (client-side)
 
 ## Project Description
 
