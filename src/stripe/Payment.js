@@ -57,19 +57,19 @@ function Payment() {
   }, [token, id, quantity]);
 
   return (
-    <>
+    <div>
       {error &&
         <ErrorAlert
           message={error}
         />
       }
-      <h1 style={{textAlign: 'center'}}>Payment</h1>
+      <h1 style={{textAlign: 'center', fontFamily: 'fantasy'}}>Payment</h1>
       {clientSecret && stripePromise && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
           <CheckoutForm id={id} quantity={quantity}/>
         </Elements>
       )}
-    </>
+    </div>
   );
 }
 

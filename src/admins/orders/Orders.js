@@ -1,23 +1,24 @@
 import { Form, Table, Typography, Input, Select } from 'antd';
 import { EditOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from './Orders.module.css';
 import { verificationToken } from '../../verificationToken/VerificationToken';
 import { SuccessAlert, ErrorAlert, InfoAlert } from '../../general/alert/AlertComponent';
 
 const { Option } = Select;
 
-const UpdateProducts = () => {
-    const dispatch = useDispatch();
-    const orders = useSelector((state) => state.order.orders);
+const Orders = () => {
     const product = useSelector((state) => state.product.products);
+    const categories = useSelector((state) => state.category.categories);
     const token = useSelector((state) => state.auth.token);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [confirm, setConfirm] = useState(false);
     const [editingKey, setEditingKey] = useState('');
     const [users, setUsers] = useState();
+    const [orders, setOrders] = useState();
+    const [saveTrigger, setSaveTrigger] = useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -42,15 +43,49 @@ const UpdateProducts = () => {
         fetchUsers();
     }, [token]);
 
-    const products = product?.map(obj => {
-        const { 'category.name': categoryName, ...rest } = obj;
-        return { ...rest, category: categoryName, key: obj.id };
+    useEffect(() => {
+        const fetchOrders = async () => {
+            const url = `http://localhost:5000/order/allorders`;
+            try {
+                const response = await verificationToken(url, {
+                    headers: {
+                        Authorization: token,
+                    },
+                });
+                const data = await response.json();
+                if (data.error) {
+                    setError(data.error);
+                } else {
+                    const allOrders = data.orders;
+                    setOrders(allOrders);
+                };
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+        fetchOrders();
+    }, [token, saveTrigger]);
+
+    const updatedOrders = orders?.map((order) => {
+        const matchingProduct = product?.find((product) => {
+            return product.id === order.productId;
+        });
+        if (matchingProduct) {
+            const us = users?.find((user) => (order.userId === user.id))
+            return {
+                ...order,
+                key: matchingProduct.id,
+                'product name': matchingProduct.name + ' ' + matchingProduct.model,
+                category: categories?.find((categ) => (matchingProduct.categoryId === categ.id)).name,
+                'user name': us?.email,
+                'delivery address': us?.country + ' ' + us?.city + ' ' + us?.address + ' ' + us?.phone
+            };
+        } else {
+            return order;
+        };
     });
 
-    // const filteredCategories = categories?.map((category) => {
-    //     const { id, name, description } = category;
-    //     return { key: id, id, name, description };
-    // });
+    const orderStatus = ['Order is processed', 'Sent', 'In transit', 'Delivered'];
 
     const EditableCell = ({
         editing,
@@ -62,9 +97,8 @@ const UpdateProducts = () => {
         children,
         ...restProps
     }) => {
-        const inputNode = inputType === 'select' ? <Select>{orders?.map((values) => (
-            <Option key={values.id} value={values.id}>{values.name}</Option>
-        ))}</Select> : <Input autoComplete="off" />
+        const inputNode = inputType === 'select' ? <Select value={record.order_status} >{orderStatus?.map((values, index) => (<Option key={index} value={values}>{values}</Option>))}</Select> : <Input disabled autoComplete="off" />
+        
         return (
             <td {...restProps}>
                 {editing ? (
@@ -99,22 +133,13 @@ const UpdateProducts = () => {
         setError('');
         try {
             const row = await form.validateFields();
-            let categ = row.category;
-            // if (typeof categ === 'string') {
-            //     const foundCategory = filteredCategories.find((obj) => {
-            //         return obj.name === categ;
-            //     });
-            //     if (foundCategory) {
-            //         categ = foundCategory.id;
-            //     };
-            // }
-            const order_status = categ
             const id = editingKey;
-            const url = 'http://localhost:5000/product/updateorder';
+            const newOrderStatus = row.order_status;
+            const url = 'http://localhost:5000/order/updateorderstatus';
             try {
                 const response = await verificationToken(url, {
                     method: "PUT",
-                    body: JSON.stringify({ id, order_status }),
+                    body: JSON.stringify({ id, newOrderStatus}),
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: token,
@@ -123,8 +148,8 @@ const UpdateProducts = () => {
                 const data = await response.json();
                 if (data.message) {
                     setMessage(data.message);
-                    // fetchProducts(dispatch);
                     setEditingKey('');
+                    setSaveTrigger(prevTrigger => !prevTrigger);
                 } else if (data.message_error) {
                     setError(data.message_error)
                 } else {
@@ -143,18 +168,15 @@ const UpdateProducts = () => {
         setConfirm(false)
     };
     const columns = [];
-    if (orders && orders.length !== 0) {
-        Object.keys(orders[0]).forEach((key) => {
-            if (key === 'order_status' || key === 'id' || key === 'userId' || key === 'order_status' || key === 'productId' || key === 'quantity' || key === 'createdAt' || key === 'updatedAt') {
+    if (updatedOrders && updatedOrders.length !== 0) {
+        Object.keys(updatedOrders[0]).forEach((key) => {
+            if (key === 'order_status' || key === 'id' || key === 'order_status' || key === 'product name' || key === 'quantity' || key === 'user name' || key === 'category' || key === 'delivery address' || key === 'createdAt' || key === 'updatedAt') {
                 const column = {
                     key: key,
                     title: key,
                     dataIndex: key,
-                    width: '12%',
-                    editable: true,
-                    // render: (text) => {
-                    //     text
-                    // },
+                    width: key === 'id' || key === 'quantity' ? '4%' : '10%',
+                    editable: true
                 };
                 columns.push(column);
             };
@@ -194,7 +216,7 @@ const UpdateProducts = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                inputType: col.dataIndex === 'category' ? 'select' : 'text',
+                inputType: col.dataIndex === 'order_status' ? 'select' : 'text',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
@@ -230,7 +252,7 @@ const UpdateProducts = () => {
                         },
                     }}
                     bordered
-                    dataSource={orders}
+                    dataSource={updatedOrders}
                     columns={mergedColumns}
                     rowClassName={styles.page}
                     pagination={{
@@ -241,4 +263,4 @@ const UpdateProducts = () => {
         </div>
     );
 };
-export default UpdateProducts;
+export default Orders;

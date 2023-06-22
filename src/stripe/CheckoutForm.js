@@ -23,12 +23,12 @@ export default function CheckoutForm({ id, quantity }) {
     setIsProcessing(true);
 
     verificationToken('http://localhost:5000/order/updatequantity', {
-        method: "POST",
+        method: "PUT",
         headers: {
           'Content-Type': 'application/json',
           Authorization: token,
         },
-        body: JSON.stringify({ id: id, quantity: quantity })
+        body: JSON.stringify({ id, quantity })
       })
 
     const { error } = await stripe.confirmPayment({

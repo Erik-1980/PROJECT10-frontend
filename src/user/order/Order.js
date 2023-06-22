@@ -41,7 +41,7 @@ const Order = () => {
                                     description={<span style={{ color: 'black', position: 'absolute', marginTop: '-5px', marginLeft: '-10px', fontFamily: 'fantasy' }}>price:
                                         <span style={{ color: 'red', marginLeft: '10px' }}>{prod.discount !== 0 && Math.round((prod.price - (prod.price * prod.discount / 100)) / 10) * 10 - 5 + '$'}
                                         </span>
-                                        <p>Order status: {prod.order_status}</p>
+                                        <p>Order status: <span style={{color: 'red'}}>{prod.order_status}</span></p>
                                         <p style={{lineHeight: '0'}}>Quantity: {prod.orderQuantity}</p>
                                     </span>
                                     }
